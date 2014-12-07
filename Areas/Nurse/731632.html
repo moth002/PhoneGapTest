@@ -39,6 +39,23 @@
                             </div>
                             <div class="button-scan-container" data-role="field-container">
                                 <a href="./cameraDialog.html" class="ui-btn ui-icon-camera ui-btn-icon-left" data-theme="y">Scan</a>
+                                <button style="float: right; margin-right: 8px;" id="button-scan" data-icon="camera" data-iconpos="left" data-inline="true" onclick="onDeviceReady()">Scan</button>
+                                <script language="javascript">
+                                    function onDeviceReady() {
+                                        // Handle the Cordova pause and resume events
+
+                                        cordova.plugins.barcodeScanner.scan(
+                                        function (result) {
+                                            alert("We got a barcode\n" +
+                                                  "Result: " + result.text + "\n" +
+                                                  "Format: " + result.format + "\n" +
+                                                  "Cancelled: " + result.cancelled);
+                                        },
+                                        function (error) {
+                                            alert("Scanning failed: " + error);
+                                        }
+                                     );
+                                </script>
                             </div>
                         </div>
                     </div>
