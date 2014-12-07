@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    <!-- Print Labels -->
+    <link href="../../css/index.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../Content/jquery.mobile-1.4.2.css" />
+    <link rel="stylesheet" href="../../Content/jquery.mobile.eclair.theme.css" />
+    <script src="../../scripts/jquery-1.8.0.min.js"></script>
+    <script src="../../scripts/jquery.mobile-1.4.2.min.js"></script>
+</head>
+<body>
+    <div id="home" data-role="page" data-theme="y">
+        <div data-role="header" data-position="fixed" data-theme="y">
+            <img style="display: block; margin-left: auto; margin-right: auto; height: 45px;" src="../../Content/images/header_logo.png" />
+        </div>
+        <form id="nurse-login-form">
+            <div role="main" class="ui-content">
+                <div class="frame">
+                    <div class="eclair-mobile-frame">
+                        <div class="c1">
+                            <img id="patientImage" class="patient_image" />
+                            <table>
+                                <tr>
+                                    <td style="text-align: right; font-size: 12px;">User</td>
+                                    <td><span class="data-text" id="userName" /></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right; font-size: 12px;">Patient</td>
+                                    <td><span class="data-text" id="patientLine1" /></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><span class="data-text" id="patientLine2" /></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><span class="data-text" id="patientLine3" /></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right; font-size: 12px;">Order</td>
+                                    <td><span class="data-text" id="orderNo" /></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="c3" style="font-size: 14px;">
+                            <h4>Samples to collect:</h4>
+                            <ul>
+                                <li>Green Top, 10ml</li>
+                                <br />
+                                <li>
+                                    <span>Purple Top, 10ml</span>
+                                    <span>Collect on ice</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div data-role="footer" data-position="fixed" data-theme="y">
+                <button style="float: left; margin-left: 8px;" id="button-cancel" data-icon="delete" data-iconpos="left" data-inline="true" onclick="window.location = '../../index.html'">Cancel</button>
+                <button style="float: right;" id="button-next" data-icon="arrow-r" data-iconpos="right" data-inline="true" onclick="PrintLabels()">Print Labels</button>
+                <script language="javascript">
+                    function fnSuccess(data) {
+                        // TODO: This application has been reactivated. Restore application state here.
+                        //alert("success: " + data);
+                    };
+                    function fnError(data) {
+                        // TODO: This application has been reactivated. Restore application state here.
+                        //alert("error: " + data);
+                    };
+                    function PrintLabels() {
+                        window.plugins.toast.showShortCenter("\n Connecting to printer \n", fnSuccess, fnError);
+                        printer.open(fnSuccess, fnError, 'Argox AME-3230B');
+                        window.plugins.toast.showShortCenter("\n Printing .... \n", fnSuccess, fnError);
+                        printer.print(fnSuccess, fnError, localStorage.getItem("patientLine1"), localStorage.getItem("patientLine2").replace(/,$/, ".") + "     " + "Green Top, 10ml", "DB0010H001");
+                        printer.print(fnSuccess, fnError, localStorage.getItem("patientLine1"), localStorage.getItem("patientLine2").replace(/,$/, ".") + "     " + "Purple Top, 10ml", "DB0010E002");
+                        printer.close(fnSuccess, fnError);
+                        
+                        //printer.open(fnSuccess, fnError, 'Argox AME-3230B');
+                        //printer.print(fnSuccess, fnError, '45465417465');
+                        //printer.open(fnSuccess, fnError, 'Argox AME-3230B');
+                        //printer.print(fnSuccess, fnError, '65719794211');
+                        window.location = 'correctorder2.html';
+                    }
+                    document.getElementById("userName").innerHTML = localStorage.getItem("userName");
+                    document.getElementById("patientImage").src = localStorage.getItem("patientImgSrc");
+                    document.getElementById("patientLine1").innerHTML = localStorage.getItem("patientLine1");
+                    document.getElementById("patientLine2").innerHTML = localStorage.getItem("patientLine2");
+                    document.getElementById("patientLine3").innerHTML = localStorage.getItem("patientLine3");
+                    document.getElementById("orderNo").innerHTML = localStorage.getItem("orderNo");
+                    
+                </script>
+            </div>
+        </form>
+    </div>
+    <!-- Cordova reference, this is added to your app when it's built. -->
+    <script src="../../cordova.js"></script>
+    <script src="../../scripts/platformOverrides.js"></script>
+    <script src="js/printer.js"></script>
+</body>
+</html>
